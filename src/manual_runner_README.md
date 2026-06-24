@@ -17,7 +17,7 @@ you paste the model answer
     ↓
 you mark pass/fail
     ↓
-you optionally enter a quality rating
+you optionally enter a numeric quality rating (0-100)
     ↓
 if failed, you enter severity and failure type
     ↓
@@ -1260,7 +1260,7 @@ If the model failed:
         notes = input("Notes: ").strip()
 ```
 
-This asks for an optional quality rating, then asks you to type notes about the result.
+This asks for an optional numeric quality rating from 0 to 100, then asks you to type notes about the result.
 
 The quality field is saved with each result record.
 

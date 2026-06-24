@@ -25,7 +25,7 @@ Each run saves a JSON file containing:
 - each prompt
 - the pasted model answer
 - pass/fail status
-- optional quality rating
+- optional numeric quality rating (0-100)
 - severity if failed
 - failure types if failed
 - evaluator notes
