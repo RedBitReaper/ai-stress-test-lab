@@ -2,7 +2,7 @@
 
 This runner is designed for ChatGPT Plus / web UI usage, where there is no API.
 It shows each prompt, lets the evaluator paste a model answer, asks for a manual
-pass/fail grade, and saves the results as JSON.
+pass/fail grade, records answer quality, and saves the results as JSON.
 """
 
 from __future__ import annotations
@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from scorer import (
+    VALID_ANSWER_QUALITIES,
     VALID_FAILURE_TYPES,
     VALID_SEVERITIES,
     create_result_record,
@@ -63,6 +64,19 @@ def ask_yes_no(question: str) -> bool:
         if answer in {"n", "no"}:
             return False
         print("Please enter y or n.")
+
+
+def ask_answer_quality() -> str:
+    """Ask the evaluator to rate answer usefulness/quality."""
+    print("\nValid answer qualities:")
+    print(", ".join(VALID_ANSWER_QUALITIES))
+    print("Use this to capture answers that pass but are weak, vague, or awkward.")
+
+    while True:
+        answer_quality = input("Answer quality: ").strip().lower()
+        if answer_quality in VALID_ANSWER_QUALITIES:
+            return answer_quality
+        print("Invalid answer quality. Try again.")
 
 
 def ask_failure_metadata() -> tuple[str, list[str]]:
@@ -123,6 +137,10 @@ def save_results(
         "total_prompts": len(results),
         "passed": sum(1 for result in results if result["passed"]),
         "failed": sum(1 for result in results if not result["passed"]),
+        "answer_quality_counts": {
+            quality: sum(1 for result in results if result["answer_quality"] == quality)
+            for quality in VALID_ANSWER_QUALITIES
+        },
         "results": results,
     }
 
@@ -146,6 +164,7 @@ def run_manual_benchmark(
         model_answer = read_multiline_answer()
 
         passed = ask_yes_no("Did the model pass this prompt?")
+        answer_quality = ask_answer_quality()
 
         if passed:
             severity = None
@@ -162,6 +181,7 @@ def run_manual_benchmark(
             passed=passed,
             severity=severity,
             failure_types=failure_types,
+            answer_quality=answer_quality,
             notes=notes,
         )
         results.append(result)
