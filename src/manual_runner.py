@@ -98,6 +98,12 @@ def ask_failure_metadata() -> tuple[str, list[str]]:
     return severity, failure_types
 
 
+def ask_quality_value() -> str | None:
+    """Ask for an optional quality rating for the response."""
+    quality = input("Quality (optional): ").strip()
+    return quality if quality else None
+
+
 def display_prompt(prompt: dict[str, Any], index: int, total: int) -> None:
     """Print one prompt and its grading information."""
     print("\n" + "=" * 80)
@@ -172,6 +178,7 @@ def run_manual_benchmark(
         else:
             severity, failure_types = ask_failure_metadata()
 
+        quality = ask_quality_value()
         notes = input("Notes: ").strip()
 
         result = create_result_record(
@@ -182,6 +189,7 @@ def run_manual_benchmark(
             severity=severity,
             failure_types=failure_types,
             answer_quality=answer_quality,
+            quality=quality,
             notes=notes,
         )
         results.append(result)

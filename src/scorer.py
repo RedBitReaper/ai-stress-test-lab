@@ -127,12 +127,14 @@ def create_result_record(
     severity: str | None,
     failure_types: list[str],
     answer_quality: str,
+    quality: str | None,
     notes: str,
 ) -> dict[str, Any]:
     """Create one result record for one prompt."""
     normalized_failure_types = [normalize_text(item) for item in failure_types]
     normalized_severity = normalize_text(severity) if severity else None
     normalized_answer_quality = normalize_text(answer_quality)
+    normalized_quality = quality.strip() if quality else None
 
     validate_manual_score(
         passed=passed,
@@ -148,6 +150,7 @@ def create_result_record(
         "severity": normalized_severity,
         "failure_types": normalized_failure_types,
         "answer_quality": normalized_answer_quality,
+        "quality": normalized_quality,
         "model_answer": model_answer,
         "notes": notes,
         "graded_at": datetime.now(timezone.utc).isoformat(),

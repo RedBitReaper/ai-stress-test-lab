@@ -641,6 +641,8 @@ This file does not:
 
 Instead, it launches another file, `manual_runner.py`, which handles the manual benchmark process.
 
+The manual runner captures the prompt, pasted answer, pass/fail result, optional quality rating, and failure metadata in its saved JSON results.
+
 ## Mental model
 
 Think of `benchmark_runner.py` as a remote control.

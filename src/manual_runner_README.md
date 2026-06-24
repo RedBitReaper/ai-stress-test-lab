@@ -17,6 +17,8 @@ you paste the model answer
     ↓
 you mark pass/fail
     ↓
+you optionally enter a quality rating
+    ↓
 if failed, you enter severity and failure type
     ↓
 save the result
@@ -1254,10 +1256,13 @@ If the model failed:
 ### Line 158
 
 ```python
+        quality = ask_quality_value()
         notes = input("Notes: ").strip()
 ```
 
-This asks you to type notes about the result.
+This asks for an optional quality rating, then asks you to type notes about the result.
+
+The quality field is saved with each result record.
 
 `.strip()` removes extra space at the beginning and end.
 

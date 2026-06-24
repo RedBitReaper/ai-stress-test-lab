@@ -100,6 +100,7 @@ No benchmark code has been added yet.
 ### Phase 3: Scoring
 
 - Add pass/fail scoring
+- Add optional quality ratings
 - Add severity levels
 - Add failure tags
 - Track repeated failure patterns
